@@ -1,0 +1,79 @@
+description: "TypeScript gRPC service using nice-grpc, ts-proto, and Fastify management sidecar"
+authors:
+  - "p6m"
+requires:
+  archetect: ">=3.0.0"
+
+templating:
+  trim_blocks: true
+  lstrip_blocks: true
+
+catalog:
+  author:
+    source: "../../../personal/archetect-common/author-prompts-library"
+    library: true
+    show: false
+  org:
+    source: "../../../personal/archetect-common/org-prompts-library"
+    library: true
+    show: false
+  project:
+    source: "../../../personal/archetect-common/project-prompts-library"
+    library: true
+    show: false
+  editor-config:
+    source: "../../../personal/archetect-common/editor-config-library"
+    library: true
+    show: false
+  gitignore:
+    source: "../../../personal/archetect-common/gitignore-library"
+    library: true
+    show: false
+  scm:
+    source: "../../../personal/archetect-common/scm-library"
+    library: true
+    show: false
+  ports:
+    source: "../../../personal/archetect-common/ports-library"
+    library: true
+    show: false
+  archiver:
+    source: "../../../personal/archetect-common/archive-library"
+    library: true
+    show: false
+  platform-application-manifests:
+    source: "../platform-application-manifests-library"
+    library: true
+    show: false
+  typescript-ci:
+    source: "../typescript-ci-library"
+    library: true
+    show: false
+  typescript-resource-postgresql:
+    source: "../typescript-resource-postgresql-library"
+    library: true
+    show: false
+  typescript-resource-mysql:
+    source: "../typescript-resource-mysql-library"
+    library: true
+    show: false
+  typescript-resource-redis:
+    source: "../typescript-resource-redis-library"
+    library: true
+    show: false
+  typescript-resource-kafka:
+    source: "../typescript-resource-kafka-library"
+    library: true
+    show: false
+  typescript-resource-pulsar:
+    source: "../typescript-resource-pulsar-library"
+    library: true
+    show: false
+  typescript-resource-s3:
+    source: "../typescript-resource-s3-library"
+    library: true
+    show: false
+  typescript-resource-azure-blob:
+    source: "../typescript-resource-azure-blob-library"
+    library: true
+    show: false

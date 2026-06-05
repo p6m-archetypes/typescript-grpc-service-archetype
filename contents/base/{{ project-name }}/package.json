@@ -1,0 +1,46 @@
+{
+  "name": "{{ project-name }}",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "proto": "bash scripts/proto.sh",
+    "dev": "tsx watch src/index.ts",
+    "build": "tsup src/index.ts --format cjs --dts --out-dir dist",
+    "start": "node dist/index.js",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@bufbuild/protobuf": "^2.5",
+    "@grpc/grpc-js": "^1.12",
+    "@opentelemetry/exporter-trace-otlp-grpc": "^0.57",
+    "@opentelemetry/sdk-node": "^0.57",
+    "nice-grpc": "^2.1",
+    "nice-grpc-common": "^2.0",
+    "dotenv": "^16.4",
+    "fastify": "^5.2",
+    "fastify-plugin": "^5.0",
+    "prom-client": "^15.1"{% if persistence == 'PostgreSQL' %},
+    "drizzle-orm": "^0.38",
+    "postgres": "^3.4"{% endif %}{% if persistence == 'MySQL' %},
+    "drizzle-orm": "^0.38",
+    "mysql2": "^3.12"{% endif %}{% if cache == 'Redis' %},
+    "ioredis": "^5.4"{% endif %}{% if messaging == 'Kafka' %},
+    "kafkajs": "^2.2"{% endif %}{% if messaging == 'Pulsar' %},
+    "pulsar-client": "^1.17"{% endif %}{% if has_s3 %},
+    "@aws-sdk/client-s3": "^3.600"{% endif %}{% if has_azure_blob %},
+    "@azure/storage-blob": "^12.24"{% endif %}
+  },
+  "devDependencies": {
+    "@types/node": "^22",
+    "grpc-tools": "^1.13",
+    "ts-proto": "^2.6",
+    "tsx": "^4.19",
+    "tsup": "^8.3",
+    "typescript": "^5.7",
+    "vitest": "^2.1"{% if persistence ~= 'None' %},
+    "drizzle-kit": "^0.30"{% endif %}
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": ["esbuild", "grpc-tools", "pulsar-client"]
+  }
+}
