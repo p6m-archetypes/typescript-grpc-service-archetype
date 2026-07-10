@@ -10,70 +10,70 @@ templating:
 
 catalog:
   author:
-    source: "git@github.com:archetect-common/author-prompts-library.git"
+    source: "https://github.com/archetect-common/author-prompts-library.git"
     library: true
     show: false
   org:
-    source: "git@github.com:archetect-common/org-prompts-library.git"
+    source: "https://github.com/archetect-common/org-prompts-library.git"
     library: true
     show: false
   project:
-    source: "git@github.com:archetect-common/project-prompts-library.git"
+    source: "https://github.com/archetect-common/project-prompts-library.git"
     library: true
     show: false
   editor-config:
-    source: "git@github.com:archetect-common/editor-config-library.git"
+    source: "https://github.com/archetect-common/editor-config-library.git"
     library: true
     show: false
   gitignore:
-    source: "git@github.com:archetect-common/gitignore-library.git"
+    source: "https://github.com/archetect-common/gitignore-library.git"
     library: true
     show: false
   scm:
-    source: "git@github.com:archetect-common/scm-library.git"
+    source: "https://github.com/archetect-common/scm-library.git"
     library: true
     show: false
   ports:
-    source: "git@github.com:archetect-common/ports-library.git"
+    source: "https://github.com/archetect-common/ports-library.git"
     library: true
     show: false
   archiver:
-    source: "git@github.com:archetect-common/archive-library.git"
+    source: "https://github.com/archetect-common/archive-library.git"
     library: true
     show: false
   platform-application-manifests:
-    source: "git@github.com:p6m-archetypes/platform-application-manifests-library.git#dev"
+    source: "https://github.com/p6m-archetypes/platform-application-manifests-library.git#dev"
     library: true
     show: false
   typescript-ci:
-    source: "git@github.com:p6m-archetypes/typescript-ci-library.git#dev"
+    source: "https://github.com/p6m-archetypes/typescript-ci-library.git#dev"
     library: true
     show: false
   typescript-resource-postgresql:
-    source: "git@github.com:p6m-archetypes/typescript-resource-postgresql-library.git#dev"
+    source: "https://github.com/p6m-archetypes/typescript-resource-postgresql-library.git#dev"
     library: true
     show: false
   typescript-resource-mysql:
-    source: "git@github.com:p6m-archetypes/typescript-resource-mysql-library.git#dev"
+    source: "https://github.com/p6m-archetypes/typescript-resource-mysql-library.git#dev"
     library: true
     show: false
   typescript-resource-redis:
-    source: "git@github.com:p6m-archetypes/typescript-resource-redis-library.git#dev"
+    source: "https://github.com/p6m-archetypes/typescript-resource-redis-library.git#dev"
     library: true
     show: false
   typescript-resource-kafka:
-    source: "git@github.com:p6m-archetypes/typescript-resource-kafka-library.git#dev"
+    source: "https://github.com/p6m-archetypes/typescript-resource-kafka-library.git#dev"
     library: true
     show: false
   typescript-resource-pulsar:
-    source: "git@github.com:p6m-archetypes/typescript-resource-pulsar-library.git#dev"
+    source: "https://github.com/p6m-archetypes/typescript-resource-pulsar-library.git#dev"
     library: true
     show: false
   typescript-resource-s3:
-    source: "git@github.com:p6m-archetypes/typescript-resource-s3-library.git#dev"
+    source: "https://github.com/p6m-archetypes/typescript-resource-s3-library.git#dev"
     library: true
     show: false
   typescript-resource-azure-blob:
-    source: "git@github.com:p6m-archetypes/typescript-resource-azure-blob-library.git#dev"
+    source: "https://github.com/p6m-archetypes/typescript-resource-azure-blob-library.git#dev"
     library: true
     show: false
