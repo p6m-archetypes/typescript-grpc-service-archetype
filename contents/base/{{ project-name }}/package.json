@@ -5,7 +5,7 @@
   "scripts": {
     "proto": "bash scripts/proto.sh",
     "dev": "tsx watch src/index.ts",
-    "build": "tsup src/index.ts --format cjs --dts --out-dir dist",
+    "build": "tsup src/index.ts --format cjs --dts --out-dir dist && mkdir -p dist/generated && cp src/generated/protoset.bin dist/generated/",
     "start": "node dist/index.js",
     "test": "vitest run"
   },
@@ -16,6 +16,7 @@
     "@opentelemetry/sdk-node": "^0.57",
     "nice-grpc": "^2.1",
     "nice-grpc-common": "^2.0",
+    "nice-grpc-server-reflection": "^3.0",
     "dotenv": "^16.4",
     "fastify": "^5.2",
     "fastify-plugin": "^5.0",

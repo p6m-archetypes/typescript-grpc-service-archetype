@@ -1,4 +1,4 @@
-import Fastify from 'fastify';
+import Fastify, { type FastifyInstance } from 'fastify';
 import { register, collectDefaultMetrics } from 'prom-client';
 import { settings } from './settings';
 
@@ -18,7 +18,7 @@ export function buildManagementApp() {
   return app;
 }
 
-export async function serveManagement(): Promise<void> {
-  const app = buildManagementApp();
-  await app.listen({ host: settings.host, port: settings.managementPort });
+export async function serveManagement(app?: FastifyInstance): Promise<void> {
+  const server = app ?? buildManagementApp();
+  await server.listen({ host: settings.host, port: settings.managementPort });
 }

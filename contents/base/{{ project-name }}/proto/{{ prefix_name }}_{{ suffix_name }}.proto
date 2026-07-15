@@ -9,6 +9,7 @@ service {{ PrefixName }}{{ SuffixName }} {
     rpc Get{{ PrefixName }} (Get{{ PrefixName }}Request) returns ({{ PrefixName }});
     rpc List{{ PrefixName }}s (List{{ PrefixName }}sRequest) returns (List{{ PrefixName }}sResponse);
     rpc Update{{ PrefixName }} ({{ PrefixName }}) returns ({{ PrefixName }});
+    rpc Delete{{ PrefixName }} (Delete{{ PrefixName }}Request) returns (Delete{{ PrefixName }}Response);
 }
 
 message {{ PrefixName }} {
@@ -28,4 +29,11 @@ message List{{ PrefixName }}sRequest {
 message List{{ PrefixName }}sResponse {
     repeated {{ PrefixName }} items = 1;
     string next_page_token = 2;
+}
+
+message Delete{{ PrefixName }}Request {
+    string id = 1;
+}
+
+message Delete{{ PrefixName }}Response {
 }

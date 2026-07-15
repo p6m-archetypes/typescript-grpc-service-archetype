@@ -78,6 +78,13 @@ elseif context:get("persistence") == "MySQL" then
     require("typescript-resource-mysql").render(context, dest)
 end
 
+-- Sample scaffold entity + persistence-backed gRPC CRUD over the persistence resource
+-- (Drizzle schema, ensure-schema bootstrap, items-backed service implementation) proving
+-- the round trip end-to-end.
+if context:get("has_persistence") then
+    directory.render("contents/persistence", context)
+end
+
 if context:get("has_cache") then
     require("typescript-resource-redis").render(context, dest)
 end
