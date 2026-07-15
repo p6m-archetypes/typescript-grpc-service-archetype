@@ -1,0 +1,11 @@
+# Prova acceptance tests: `prova` from the repo root runs the whole suite.
+[run]
+paths = ["tests"]
+# Serial: concurrent renders collide on archetect's shared git cache for the composed libraries.
+jobs = 1
+
+# CI runs the same suite; capability gating (pnpm) handles what a runner lacks.
+[profiles.ci]
+paths = ["tests"]
+jobs = 1
+format = "json"
