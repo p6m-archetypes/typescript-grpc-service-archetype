@@ -93,8 +93,7 @@ end)
 -- groups, so `pnpm` is guaranteed present here.
 local installed = prova.fixture("typescript-grpc:installed", Scope.Suite, function(ctx)
   local root = ctx:use(project)
-  local install = shell.run(PNPM_INSTALL, { cwd = root.path, timeout = "300s" })
-  assert(install:ok(), "pnpm install failed:\n" .. install.stderr .. install.stdout)
+  shell.run(PNPM_INSTALL, { cwd = root.path, timeout = "300s", check = true })
   return root
 end)
 
@@ -104,16 +103,15 @@ end)
 local service = prova.fixture("typescript-grpc:service", Scope.Suite, function(ctx)
   local root = ctx:use(installed)
 
-  local proto = shell.run("pnpm proto", { cwd = root.path, timeout = "180s" })
-  assert(proto:ok(), "pnpm proto failed:\n" .. proto.stderr .. proto.stdout)
+  shell.run("pnpm proto", { cwd = root.path, timeout = "180s", check = true })
 
   local port, mgmt = net.free_port(), net.free_port()
   ctx:manage(shell.spawn("pnpm exec tsx src/index.ts", {
     cwd = root.path,
     env = {
       HOST            = "127.0.0.1",
-      GRPC_PORT       = tostring(port),
-      MANAGEMENT_PORT = tostring(mgmt),
+      GRPC_PORT       = port,
+      MANAGEMENT_PORT = mgmt,
     },
   }))
 
@@ -287,21 +285,19 @@ for _, v in ipairs(VARIANTS) do
     local root = ctx:use(variant_project):dir(PROJECT_DIR)
     local db = v.db.container(ctx)
 
-    local install = shell.run(PNPM_INSTALL, { cwd = root.path, timeout = "300s" })
-    assert(install:ok(), label .. " pnpm install failed:\n" .. install.stderr .. install.stdout)
+    shell.run(PNPM_INSTALL, { cwd = root.path, timeout = "300s", check = true })
 
-    local proto = shell.run("pnpm proto", { cwd = root.path, timeout = "180s" })
-    assert(proto:ok(), label .. " pnpm proto failed:\n" .. proto.stderr .. proto.stdout)
+    shell.run("pnpm proto", { cwd = root.path, timeout = "180s", check = true })
 
     local port, mgmt = net.free_port(), net.free_port()
     ctx:manage(shell.spawn("pnpm exec tsx src/index.ts", {
       cwd = root.path,
       env = {
         HOST            = "127.0.0.1",
-        GRPC_PORT       = tostring(port),
-        MANAGEMENT_PORT = tostring(mgmt),
-        DB_HOST         = "127.0.0.1",
-        DB_PORT         = tostring(db.container:host_port(v.db_port)),
+        GRPC_PORT       = port,
+        MANAGEMENT_PORT = mgmt,
+        DB_HOST         = db.host,
+        DB_PORT         = db.port,
         DB_USERNAME     = "prova",
         DB_PASSWORD     = "prova",
         DB_DBNAME       = "prova",
