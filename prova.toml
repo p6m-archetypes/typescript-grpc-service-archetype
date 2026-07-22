@@ -2,7 +2,7 @@
 [run]
 proofs = ["tests"]
 
-# CI runs the same suite; capability gating (docker/pnpm) handles what a runner lacks.
+# CI runs the same suite; docker is the only capability a runner needs (S8b).
 [profiles.ci]
 format = "json"
 
