@@ -1,9 +1,12 @@
 FROM node:22-alpine AS builder
 WORKDIR /app
-# protobuf-compiler required for grpc-tools proto compilation
-RUN apk add --no-cache protobuf
-COPY package.json pnpm-workspace.yaml .npmrc* ./
-RUN npm install -g pnpm && pnpm install --frozen-lockfile
+# protobuf-compiler for grpc-tools proto compilation; bash for scripts/proto.sh
+RUN apk add --no-cache protobuf bash
+COPY package.json pnpm-workspace.yaml pnpm-lock.yaml* .npmrc* ./
+# The lockfile is authoritative when present (any committed checkout — what CI builds); a fresh
+# render ships none yet, so fall back to a plain install for the first build after rendering.
+RUN npm install -g pnpm && \
+    if [ -f pnpm-lock.yaml ]; then pnpm install --frozen-lockfile; else pnpm install; fi
 COPY . .
 RUN pnpm proto && pnpm build
 

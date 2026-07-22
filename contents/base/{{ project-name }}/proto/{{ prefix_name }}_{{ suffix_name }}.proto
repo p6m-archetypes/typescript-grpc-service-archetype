@@ -5,16 +5,20 @@ package {{ prefix_name }}_{{ suffix_name }};
 option java_package = "{{ prefix_name }}.{{ suffix_name }}";
 
 service {{ PrefixName }}{{ SuffixName }} {
-    rpc Create{{ PrefixName }} ({{ PrefixName }}) returns ({{ PrefixName }});
+    rpc Create{{ PrefixName }} (Create{{ PrefixName }}Request) returns ({{ PrefixName }});
     rpc Get{{ PrefixName }} (Get{{ PrefixName }}Request) returns ({{ PrefixName }});
     rpc List{{ PrefixName }}s (List{{ PrefixName }}sRequest) returns (List{{ PrefixName }}sResponse);
-    rpc Update{{ PrefixName }} ({{ PrefixName }}) returns ({{ PrefixName }});
+    rpc Update{{ PrefixName }} (Update{{ PrefixName }}Request) returns ({{ PrefixName }});
     rpc Delete{{ PrefixName }} (Delete{{ PrefixName }}Request) returns (Delete{{ PrefixName }}Response);
 }
 
 message {{ PrefixName }} {
-    optional string id = 1;
+    string id = 1;
     string display_name = 2;
+}
+
+message Create{{ PrefixName }}Request {
+    string display_name = 1;
 }
 
 message Get{{ PrefixName }}Request {
@@ -22,13 +26,16 @@ message Get{{ PrefixName }}Request {
 }
 
 message List{{ PrefixName }}sRequest {
-    int32 page_size = 1;
-    string page_token = 2;
 }
 
 message List{{ PrefixName }}sResponse {
     repeated {{ PrefixName }} items = 1;
     string next_page_token = 2;
+}
+
+message Update{{ PrefixName }}Request {
+    string id = 1;
+    string display_name = 2;
 }
 
 message Delete{{ PrefixName }}Request {

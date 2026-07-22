@@ -20,6 +20,7 @@
     "dotenv": "^16.4",
     "fastify": "^5.2",
     "fastify-plugin": "^5.0",
+    "pino-pretty": "^13.0",
     "prom-client": "^15.1"{% if persistence == 'PostgreSQL' %},
     "drizzle-orm": "^0.38",
     "postgres": "^3.4"{% endif %}{% if persistence == 'MySQL' %},

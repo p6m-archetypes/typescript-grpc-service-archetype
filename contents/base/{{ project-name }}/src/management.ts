@@ -1,12 +1,13 @@
 import Fastify, { type FastifyInstance } from 'fastify';
 import { register, collectDefaultMetrics } from 'prom-client';
+import { loggerOptions } from './logging';
 import { settings } from './settings';
 
 // Register Node.js process & runtime metrics with the default registry.
 collectDefaultMetrics();
 
 export function buildManagementApp() {
-  const app = Fastify({ logger: { level: settings.logLevel } });
+  const app = Fastify({ logger: loggerOptions });
 
   app.get('/health/readiness', async () => ({ status: 'ok' }));
   app.get('/health/liveness', async () => ({ status: 'ok' }));

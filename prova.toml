@@ -6,7 +6,9 @@ proofs = ["tests"]
 [profiles.ci]
 format = "json"
 
-# Infrastructure dependencies are external plugins (pinned to released v1 tags).
+# Infrastructure plugins pinned to released tags; `p6m` is the org standards suite (path-local
+# while it incubates in this workspace — pin its git tag once published).
 [plugins]
 postgres = "prova-rs/prova-postgres@v1"
 mysql    = "prova-rs/prova-mysql@v1"
+p6m      = { path = "../prova-p6m-standards" }
