@@ -8,17 +8,30 @@
 
 local p6m = require("p6m")
 local postgres = require("postgres")
+local mysql = require("mysql")
 
 local SRC = "."
 
-local NAMES = {
-	{ prefix = "Customer" },
-	{ prefix = "User Details" },
+-- Two variants cover both axes cheaply: name shape (single vs multi-word — casing bugs only show
+-- on the second) paired with persistence backend (PostgreSQL vs MySQL).
+local VARIANTS = {
+	{
+		prefix = "Customer",
+		persistence = "PostgreSQL",
+		db = postgres,
+		count_by_name = "SELECT count(*) FROM items WHERE display_name = $1",
+	},
+	{
+		prefix = "User Details",
+		persistence = "MySQL",
+		db = mysql,
+		count_by_name = "SELECT count(*) FROM items WHERE display_name = ?",
+	},
 }
 
-for _, n in ipairs(NAMES) do
-	local id = p6m.identity(n)
-	local label = "standards[" .. id.project_name .. "]"
+for _, n in ipairs(VARIANTS) do
+	local id = p6m.identity{ prefix = n.prefix }
+	local label = "standards[" .. id.project_name .. "/" .. n.persistence .. "]"
 
 	local project = prova.fixture(label .. ":project", Scope.File, function(ctx)
 		return archetect.render{
@@ -31,7 +44,7 @@ for _, n in ipairs(NAMES) do
 				prefix_name = id.answers.prefix_name,
 				suffix_name = id.answers.suffix_name,
 				image_registry = "ghcr.io/acme",
-				persistence = "PostgreSQL",
+				persistence = n.persistence,
 			},
 			destination = ctx:tempdir(),
 			defaults = true,
@@ -40,7 +53,7 @@ for _, n in ipairs(NAMES) do
 
 	local sut = prova.topology(label .. ":sut", function(ctx)
 		local root = ctx:use(project):dir(id.project_name)
-		return p6m.sut(ctx, { root = root.path, id = id, transport = "grpc", db = postgres })
+		return p6m.sut(ctx, { root = root.path, id = id, transport = "grpc", db = n.db })
 	end)
 
 	prova.group(label, { requires = { "docker" }, tags = { "standards" } }, function(g)
@@ -48,7 +61,7 @@ for _, n in ipairs(NAMES) do
 			persisted = function(t, name, count)
 				local svc = t:use(sut)
 				t:expect(
-					svc.db.client:query_value("SELECT count(*) FROM items WHERE display_name = $1", { name }),
+					svc.db.client:query_value(n.count_by_name, { name }),
 					"rows in the database"
 				):equals(count)
 			end,
