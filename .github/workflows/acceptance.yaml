@@ -23,3 +23,6 @@ jobs:
       - uses: prova-rs/run-action@v1
         with:
           profile: ci
+          # -U: floating @v1 plugin pins are tag-pins, which the git cache treats as immutable —
+          # force-update so a moved v1 (a spec release) is picked up on warm caches.
+          args: "-U"
