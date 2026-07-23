@@ -8,7 +8,7 @@ COPY package.json pnpm-workspace.yaml pnpm-lock.yaml* .npmrc* ./
 RUN npm install -g pnpm && \
     if [ -f pnpm-lock.yaml ]; then pnpm install --frozen-lockfile; else pnpm install; fi
 COPY . .
-RUN pnpm proto && pnpm build
+RUN pnpm build
 
 FROM node:22-alpine
 WORKDIR /app
