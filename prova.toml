@@ -1,3 +1,6 @@
+[requires]
+prova = ">= 0.16"
+
 # Prova acceptance tests: `prova` from the repo root runs the whole suite.
 [run]
 proofs = ["tests"]
@@ -6,9 +9,9 @@ proofs = ["tests"]
 [profiles.ci]
 format = "json"
 
-# Infrastructure plugins pinned to released tags; `p6m` is the org standards suite (released v1;
+# Infrastructure packages pinned to released tags; `p6m` is the org standards suite (released v1;
 # the ratchet: spec bumps move the v1 tag and the fleet answers).
-[plugins]
+[dependencies]
 postgres = "prova-rs/prova-postgres@v1"
 mysql    = "prova-rs/prova-mysql@v1"
 p6m      = "p6m-archetypes/prova-p6m-standards@v1"
