@@ -69,3 +69,8 @@ for _, n in ipairs(VARIANTS) do
 		p6m.standards.runtime(g, sut)
 	end)
 end
+
+-- E7's released-tag bar, as the `p6m-pin` reminder: DUE while the manifest pins `dev` (the
+-- YP6M-3372 staging window), silent again once the pin returns to a released tag. Heed it
+-- (`prova --heed=p6m-pin`) when the window closes.
+p6m.pin_reminder()

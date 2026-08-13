@@ -14,4 +14,9 @@ format = "json"
 [dependencies]
 postgres = "prova-rs/prova-postgres@v1"
 mysql    = "prova-rs/prova-mysql@v1"
-p6m      = "p6m-archetypes/prova-p6m-standards@v1"
+# NOTE (YP6M-3372): pinned to `dev`, the org's integration branch, while the studio staging is
+# brought up against the whole archetype fleet — deliberate and temporary, so standards changes
+# land here without waiting on a release. The suite's `p6m-pin` reminder is DUE for as long as
+# this pin rides a branch (silent again on a released tag); heed it (`prova --heed=p6m-pin`, or a
+# profile's `heed = ["p6m-pin"]`) when the window closes.
+p6m      = { git = "https://github.com/p6m-archetypes/prova-p6m-standards", branch = "dev" }
