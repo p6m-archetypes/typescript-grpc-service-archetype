@@ -9,16 +9,8 @@ templating:
   lstrip_blocks: true
 
 catalog:
-  author:
-    source: "https://github.com/archetect-common/author-prompts-library.git"
-    library: true
-    show: false
-  org:
-    source: "https://github.com/archetect-common/org-prompts-library.git"
-    library: true
-    show: false
-  project:
-    source: "https://github.com/archetect-common/project-prompts-library.git"
+  p6m-identity:
+    source: "https://github.com/p6m-archetypes/p6m-identity-library.git#dev"
     library: true
     show: false
   editor-config:

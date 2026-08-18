@@ -6,7 +6,7 @@ import type { FastifyInstance } from 'fastify';
 export async function serveGrpc({% if persistence ~= 'None' %}db: FastifyInstance['db']{% endif %}): Promise<void> {
   // Import generated code inside the function — run 'pnpm proto' to generate src/generated/ first
   const { createServer } = await import('nice-grpc');
-  const { {{ PrefixName }}{{ SuffixName }}Definition } = await import('./generated/{{ prefix_name }}_{{ suffix_name }}');
+  const { {{ ProjectName }}Definition } = await import('./generated/{{ project_name }}');
   const { HealthDefinition, HealthCheckResponse_ServingStatus } = await import('./generated/grpc/health/v1/health');
   const { ServerReflectionService, ServerReflection } = await import('nice-grpc-server-reflection');
   const { readFileSync } = await import('node:fs');
@@ -23,23 +23,23 @@ export async function serveGrpc({% if persistence ~= 'None' %}db: FastifyInstanc
 {% if persistence ~= 'None' %}
   // Sample scaffold: the proto CRUD persisted into the items table (src/persistence/schema.ts)
   // through Drizzle. Replace src/service/impl.ts with your real domain implementation.
-  const { create{{ PrefixName }}{{ SuffixName }}Impl } = await import('./service/impl');
-  server.add({{ PrefixName }}{{ SuffixName }}Definition, create{{ PrefixName }}{{ SuffixName }}Impl(db));
+  const { create{{ ProjectName }}Impl } = await import('./service/impl');
+  server.add({{ ProjectName }}Definition, create{{ ProjectName }}Impl(db));
 {% else %}
-  server.add({{ PrefixName }}{{ SuffixName }}Definition, {
-    async create{{ PrefixName }}(request) {
+  server.add({{ ProjectName }}Definition, {
+    async create{{ EntityName }}(request) {
       return { id: '', displayName: request.displayName ?? '' };
     },
-    async get{{ PrefixName }}(request) {
+    async get{{ EntityName }}(request) {
       return { id: request.id, displayName: '' };
     },
-    async list{{ PrefixName }}s(request) {
+    async list{{ EntityName }}s(request) {
       return { items: [], nextPageToken: '' };
     },
-    async update{{ PrefixName }}(request) {
+    async update{{ EntityName }}(request) {
       return { id: request.id, displayName: request.displayName ?? '' };
     },
-    async delete{{ PrefixName }}(request) {
+    async delete{{ EntityName }}(request) {
       return {};
     },
   });
@@ -61,7 +61,7 @@ export async function serveGrpc({% if persistence ~= 'None' %}db: FastifyInstanc
   server.add(
     ServerReflectionService,
     ServerReflection(readFileSync(join(__dirname, 'generated', 'protoset.bin')), [
-      {{ PrefixName }}{{ SuffixName }}Definition.fullName,
+      {{ ProjectName }}Definition.fullName,
       HealthDefinition.fullName,
     ]),
   );
