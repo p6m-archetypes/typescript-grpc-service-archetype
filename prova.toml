@@ -3,7 +3,7 @@ prova = ">= 0.16"
 
 # Prova acceptance tests: `prova` from the repo root runs the whole suite.
 [run]
-proofs = ["tests"]
+proofs = ["proofs"]
 
 # CI runs the same suite; docker is the only capability a runner needs (S8b).
 [profiles.ci]

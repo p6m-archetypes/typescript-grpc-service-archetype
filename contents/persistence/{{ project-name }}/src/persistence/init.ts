@@ -6,7 +6,7 @@ import type { FastifyInstance } from 'fastify';
 export async function ensureSchema(db: FastifyInstance['db']): Promise<void> {
 {% if persistence == 'PostgreSQL' %}
   await db.execute(sql`
-    CREATE TABLE IF NOT EXISTS items (
+    CREATE TABLE IF NOT EXISTS {{ entity_name }}s (
       id varchar(36) PRIMARY KEY,
       display_name varchar(255) NOT NULL,
       created_at timestamptz NOT NULL DEFAULT now()
@@ -14,7 +14,7 @@ export async function ensureSchema(db: FastifyInstance['db']): Promise<void> {
   `);
 {% else %}
   await db.execute(sql`
-    CREATE TABLE IF NOT EXISTS items (
+    CREATE TABLE IF NOT EXISTS {{ entity_name }}s (
       id varchar(36) PRIMARY KEY,
       display_name varchar(255) NOT NULL,
       created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
