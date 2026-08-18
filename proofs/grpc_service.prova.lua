@@ -1,141 +1,89 @@
---- Render-verification suite for the TypeScript gRPC service archetype (nice-grpc + ts-proto +
---- pnpm + Vitest): each persistence variant lays out correctly and is fully rendered, and the
---- hollow (None) rendering stays hollow.
+--- Render-verification suite for the Typescript gRPC service archetype: each persistence variant lays
+--- out correctly and is fully rendered, and the hollow (None) rendering stays hollow.
 ---
---- The BEHAVIORAL bar — CRUD through the production image (driven via server reflection), the
---- platform env contract, health/metrics/structured logs, both name shapes — lives in
---- tests/standards_test.lua (the shared p6m standards suite), fully containerized: docker is the
---- only requirement. No host toolchain is invoked here either (S8b): compile coverage is
---- containerized — the standards SUT builds each persistence variant's production image, and the
---- hollow (None) rendering is proven by a docker-gated `docker.build` of its production
---- Dockerfile below. The rendered project's own unit tests (Vitest) belong to the rendered
---- project's CI, not to this suite.
+--- Every rendering comes from `p6m.spec{}` + `p6m.render` — the shape harness — so the paths this
+--- file expects are BUILT from the same identity the archetype was answered with, never spelled by
+--- hand. A hand-spelled path list is how a scaffold file outlived the entity it was named for.
 ---
---- Run from the archetype repo root (uses ./prova.toml):   prova
+--- The BEHAVIORAL bar — CRUD through the production image, the platform env contract, health/
+--- metrics/structured logs, both name shapes — lives in proofs/standards.prova.lua, which also owns
+--- S10 CI parity. No host toolchain is invoked here (S8b).
 
 local p6m = require("p6m")
 
-local SRC = "."
-
-local BASE_ANSWERS = {
-  project_name = "example-service",
-  solution_name = "acme-platform",
-  entity_name = "example",
-  image_registry = "ghcr.io/acme",
-}
-
--- NOTE: named, and that is load-bearing. `ctx:tempdir("render1")` is ADDRESSED, not created, so every
--- unnamed call in one scope answers with the SAME directory: two renders into one destination
--- leave the first winner in place and the second silently asserts against it. That is what made
--- the hollow variant see the persistence variant's files.
-local function answers_with(extra)
-  local out = {}
-  for k, v in pairs(BASE_ANSWERS) do out[k] = v end
-  for k, v in pairs(extra) do out[k] = v end
-  return out
+local function spec_for(persistence)
+  return p6m.spec{
+    language = "typescript", shape = "full", transport = "grpc",
+    project = "example-service", entity = "example", solution = "acme-platform",
+    persistence = persistence, registry = "ghcr.io/acme",
+  }
 end
 
--- Files the persistence scaffold must produce (relative to the rendered project root).
-local SCAFFOLD_FILES = {
-  "src/persistence/schema.ts",
-  "src/persistence/init.ts",
-  "src/service/impl.ts",
-  "src/plugins/persistence.ts",
-}
-
-for _, persistence in ipairs({ "PostgreSQL", "MySQL" }) do
-  local label = "typescript-grpc[" .. persistence .. "]"
-
-  local project = prova.fixture(label .. ":project", Scope.File, function(ctx)
-    return archetect.render{
-      source = SRC,
-      answers = answers_with{ persistence = persistence },
-      destination = ctx:tempdir("render1"),
-      defaults = true,
-    }
-  end)
-
-  archetect.verify(project, {
-    name = label,
-    project_dir = "example-service",
-    expected_files = {
+local function paths(s)
+  -- `P` is the .NET-style project directory; typescript renders flat at the project root, so the
+  -- only identity-derived names here are the entity-named scaffold modules.
+  local ent = s.id.entity_name
+  return {
+    base = {
       "package.json",
-      "tsconfig.json",
-      "vitest.config.ts",
       "pnpm-workspace.yaml",
       ".npmrc",
-      "proto/example_service.proto",
-      "proto/grpc/health/v1/health.proto",
-      "scripts/proto.sh",
+      ".dockerignore",
       "src/index.ts",
-      "src/servicer.ts",
       "src/logging.ts",
       "src/management.ts",
       "src/otel.ts",
-      "src/settings.ts",
-      "tests/health.test.ts",
-      "drizzle.config.ts",
-      ".dockerignore",
-      ".github/workflows/build.yaml",
       ".platform/docker/local/Dockerfile",
       ".platform/docker/prd/Dockerfile",
-      SCAFFOLD_FILES[1], SCAFFOLD_FILES[2], SCAFFOLD_FILES[3], SCAFFOLD_FILES[4],
     },
+    scaffold = {
+      "src/persistence/init.ts",
+      "src/persistence/schema.ts",
+    },
+  }
+end
+
+for _, persistence in ipairs({ "PostgreSQL", "MySQL" }) do
+  local s = spec_for(persistence)
+  local f = paths(s)
+
+  local expected = {}
+  for _, x in ipairs(f.base) do expected[#expected + 1] = x end
+  for _, x in ipairs(f.scaffold) do expected[#expected + 1] = x end
+
+  archetect.verify{
+    name = s.label,
+    source = ".",
+    answers = s.answers,
+    project_dir = s.project_dir,
+    expected_files = expected,
     yaml_globs = { ".platform/kubernetes/**/*.yaml" },
-  })
+  }
 end
 
 -- The hollow rendering stays hollow: no persistence, no scaffold files.
-local none_project = prova.fixture("typescript-grpc[None]:project", Scope.File, function(ctx)
-  return archetect.render{
-    source = SRC,
-    answers = answers_with{ persistence = "None" },
-    destination = ctx:tempdir("render2"),
-    defaults = true,
-  }
-end)
+local none = spec_for("None")
+local none_paths = paths(none)
+local none_project = p6m.render(none)
 
 archetect.verify(none_project, {
-  name = "typescript-grpc[None]",
-  project_dir = "example-service",
-  expected_files = {
-    "package.json",
-    "proto/example_service.proto",
-    "src/index.ts",
-    "src/servicer.ts",
-    "src/logging.ts",
-    "src/management.ts",
-    ".dockerignore",
-    ".platform/docker/local/Dockerfile",
-    ".platform/docker/prd/Dockerfile",
-  },
-  absent_files = SCAFFOLD_FILES,
+  name = none.label,
+  project_dir = none.project_dir,
+  expected_files = none_paths.base,
+  absent_files = none_paths.scaffold,
   yaml_globs = { ".platform/kubernetes/**/*.yaml" },
 })
 
 -- Containerized compile proof for the hollow variant (S8b): the persistence variants compile
--- inside the standards SUT image builds; None never boots there, so prove it compiles (proto
--- codegen + tsc included) by building its production image — build success IS the compile check.
-prova.group("typescript-grpc[None]:image", { requires = { "docker" } }, function(g)
+-- inside the standards SUT image builds; None never boots there, so prove it compiles by building
+-- its production image — build success IS the compile check, no boot needed.
+prova.group(none.label .. ":image", { requires = { "docker" } }, function(g)
   g:test("production image builds from a clean render", function(t)
-    local root = t:use(none_project):dir("example-service")
+    local root = t:use(none_project):dir(none.project_dir)
     local image = docker.build{
       context = root.path,
       dockerfile = ".platform/docker/prd/Dockerfile",
     }
     t:expect(image, "built image"):never():is_nil()
   end)
-end)
-
--- CI parity (S10): the rendered project's own Build workflow path — js-pnpm-setup/js-pnpm-build's
--- exact command sequence on a fresh clone, in the toolchain image. The Dockerfile and CI are two
--- independent build paths; only the first was held above, and the drift bit on 2026-07-23 (CI's
--- `pnpm build` needed proto codegen only the Dockerfile ran). The hollow render suffices:
--- resource variants change dependencies, not the command path.
-prova.group("typescript-grpc[None]:ci", { requires = { "docker" }, tags = { "standards" } }, function(g)
-  p6m.standards.ci_parity(g, none_project, {
-    stack = "pnpm",
-    project_dir = "example-service",
-    name = "typescript-grpc",
-  })
 end)
