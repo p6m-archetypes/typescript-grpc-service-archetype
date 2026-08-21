@@ -96,10 +96,18 @@ gitignore.prompt(context, {
 -- SCM — its own page: publishing is a decision about delivery, not about the service. The
 -- repository details it reveals are intra-page, so choosing a provider keeps the client here.
 local scm = require("scm")
-context:page({ title = "Source Control", key = "source_control",
-               help = "Optionally create and publish the repository." }, function(ctx)
-    scm.prompt(ctx)
-end)
+-- Ybor Studio's generator-service creates the repository and packages the output itself, so it
+-- renders with `-s no-scm` and never sees this page. The CLI supplies no switches and keeps it:
+-- switches are never prompted, so the DEFAULT has to be the interactive path and the programmatic
+-- caller is the one that opts out (S1d). Answering `scm_provider = "None"` would not do — the page
+-- still derives, and a client that renders the interface as a form shows a step that asks nothing.
+local scm_external = archetype.switches.is_enabled("no-scm")
+if not scm_external then
+    context:page({ title = "Source Control", key = "source_control",
+                   help = "Optionally create and publish the repository." }, function(ctx)
+        scm.prompt(ctx)
+    end)
+end
 
 if archetype.switches.is_enabled("debug-context") then
     log.info(archetype.description .. " Context:")
@@ -156,7 +164,9 @@ platform.finalize(context, dest)
 -- EditorConfig, gitignore, SCM finalize
 editor_config.finalize(context, dest)
 gitignore.finalize(context, dest)
-scm.finalize(context)
+if not scm_external then
+    scm.finalize(context)
+end
 
 -- Archive (zip / tarball switches for Ybor Studio)
 require("archiver").finalize(context)
