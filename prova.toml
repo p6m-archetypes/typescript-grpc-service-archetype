@@ -19,4 +19,4 @@ mysql    = "prova-rs/prova-mysql@v1"
 # land here without waiting on a release. The suite's `p6m-pin` reminder is DUE for as long as
 # this pin rides a branch (silent again on a released tag); heed it (`prova --heed=p6m-pin`, or a
 # profile's `heed = ["p6m-pin"]`) when the window closes.
-p6m      = { git = "https://github.com/p6m-archetypes/prova-p6m-standards", branch = "dev" }
+p6m      = { git = "https://github.com/p6m-archetypes/prova-p6m-standards", tag = "v1" }

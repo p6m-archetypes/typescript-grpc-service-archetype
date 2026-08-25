@@ -10,7 +10,7 @@ templating:
 
 catalog:
   p6m-identity:
-    source: "https://github.com/p6m-archetypes/p6m-identity-library.git#dev"
+    source: "https://github.com/p6m-archetypes/p6m-identity-library.git#v1"
     library: true
     show: false
   editor-config:
@@ -34,38 +34,38 @@ catalog:
     library: true
     show: false
   platform-application-manifests:
-    source: "https://github.com/p6m-archetypes/platform-application-manifests-library.git#dev"
+    source: "https://github.com/p6m-archetypes/platform-application-manifests-library.git#v1"
     library: true
     show: false
   typescript-ci:
-    source: "https://github.com/p6m-archetypes/typescript-ci-library.git#dev"
+    source: "https://github.com/p6m-archetypes/typescript-ci-library.git#v1"
     library: true
     show: false
   typescript-resource-postgresql:
-    source: "https://github.com/p6m-archetypes/typescript-resource-postgresql-library.git#dev"
+    source: "https://github.com/p6m-archetypes/typescript-resource-postgresql-library.git#v1"
     library: true
     show: false
   typescript-resource-mysql:
-    source: "https://github.com/p6m-archetypes/typescript-resource-mysql-library.git#dev"
+    source: "https://github.com/p6m-archetypes/typescript-resource-mysql-library.git#v1"
     library: true
     show: false
   typescript-resource-redis:
-    source: "https://github.com/p6m-archetypes/typescript-resource-redis-library.git#dev"
+    source: "https://github.com/p6m-archetypes/typescript-resource-redis-library.git#v1"
     library: true
     show: false
   typescript-resource-kafka:
-    source: "https://github.com/p6m-archetypes/typescript-resource-kafka-library.git#dev"
+    source: "https://github.com/p6m-archetypes/typescript-resource-kafka-library.git#v1"
     library: true
     show: false
   typescript-resource-pulsar:
-    source: "https://github.com/p6m-archetypes/typescript-resource-pulsar-library.git#dev"
+    source: "https://github.com/p6m-archetypes/typescript-resource-pulsar-library.git#v1"
     library: true
     show: false
   typescript-resource-s3:
-    source: "https://github.com/p6m-archetypes/typescript-resource-s3-library.git#dev"
+    source: "https://github.com/p6m-archetypes/typescript-resource-s3-library.git#v1"
     library: true
     show: false
   typescript-resource-azure-blob:
-    source: "https://github.com/p6m-archetypes/typescript-resource-azure-blob-library.git#dev"
+    source: "https://github.com/p6m-archetypes/typescript-resource-azure-blob-library.git#v1"
     library: true
     show: false
