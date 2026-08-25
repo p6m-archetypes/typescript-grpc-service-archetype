@@ -1,0 +1,71 @@
+description: "TypeScript gRPC service using nice-grpc, ts-proto, and Fastify management sidecar"
+authors:
+  - "p6m"
+requires:
+  archetect: ">=3.0.0"
+
+templating:
+  trim_blocks: true
+  lstrip_blocks: true
+
+catalog:
+  p6m-identity:
+    source: "https://github.com/p6m-archetypes/p6m-identity-library.git#v1"
+    library: true
+    show: false
+  editor-config:
+    source: "https://github.com/archetect-common/editor-config-library.git"
+    library: true
+    show: false
+  gitignore:
+    source: "https://github.com/archetect-common/gitignore-library.git"
+    library: true
+    show: false
+  scm:
+    source: "https://github.com/archetect-common/scm-library.git"
+    library: true
+    show: false
+  ports:
+    source: "https://github.com/archetect-common/ports-library.git"
+    library: true
+    show: false
+  archiver:
+    source: "https://github.com/archetect-common/archive-library.git"
+    library: true
+    show: false
+  platform-application-manifests:
+    source: "https://github.com/p6m-archetypes/platform-application-manifests-library.git#v1"
+    library: true
+    show: false
+  typescript-ci:
+    source: "https://github.com/p6m-archetypes/typescript-ci-library.git#v1"
+    library: true
+    show: false
+  typescript-resource-postgresql:
+    source: "https://github.com/p6m-archetypes/typescript-resource-postgresql-library.git#v1"
+    library: true
+    show: false
+  typescript-resource-mysql:
+    source: "https://github.com/p6m-archetypes/typescript-resource-mysql-library.git#v1"
+    library: true
+    show: false
+  typescript-resource-redis:
+    source: "https://github.com/p6m-archetypes/typescript-resource-redis-library.git#v1"
+    library: true
+    show: false
+  typescript-resource-kafka:
+    source: "https://github.com/p6m-archetypes/typescript-resource-kafka-library.git#v1"
+    library: true
+    show: false
+  typescript-resource-pulsar:
+    source: "https://github.com/p6m-archetypes/typescript-resource-pulsar-library.git#v1"
+    library: true
+    show: false
+  typescript-resource-s3:
+    source: "https://github.com/p6m-archetypes/typescript-resource-s3-library.git#v1"
+    library: true
+    show: false
+  typescript-resource-azure-blob:
+    source: "https://github.com/p6m-archetypes/typescript-resource-azure-blob-library.git#v1"
+    library: true
+    show: false

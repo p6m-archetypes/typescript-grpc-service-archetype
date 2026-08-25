@@ -1,0 +1,46 @@
+syntax = "proto3";
+
+package {{ project_name }};
+
+option java_package = "{{ project_name }}";
+
+service {{ ProjectName }} {
+    rpc Create{{ EntityName }} (Create{{ EntityName }}Request) returns ({{ EntityName }});
+    rpc Get{{ EntityName }} (Get{{ EntityName }}Request) returns ({{ EntityName }});
+    rpc List{{ EntityName }}s (List{{ EntityName }}sRequest) returns (List{{ EntityName }}sResponse);
+    rpc Update{{ EntityName }} (Update{{ EntityName }}Request) returns ({{ EntityName }});
+    rpc Delete{{ EntityName }} (Delete{{ EntityName }}Request) returns (Delete{{ EntityName }}Response);
+}
+
+message {{ EntityName }} {
+    string id = 1;
+    string display_name = 2;
+}
+
+message Create{{ EntityName }}Request {
+    string display_name = 1;
+}
+
+message Get{{ EntityName }}Request {
+    string id = 1;
+}
+
+message List{{ EntityName }}sRequest {
+}
+
+message List{{ EntityName }}sResponse {
+    repeated {{ EntityName }} items = 1;
+    string next_page_token = 2;
+}
+
+message Update{{ EntityName }}Request {
+    string id = 1;
+    string display_name = 2;
+}
+
+message Delete{{ EntityName }}Request {
+    string id = 1;
+}
+
+message Delete{{ EntityName }}Response {
+}
