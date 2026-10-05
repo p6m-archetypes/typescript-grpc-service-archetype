@@ -14,7 +14,7 @@ local p6m = require("p6m")
 local function spec_for(persistence)
   return p6m.spec{
     language = "typescript", shape = "full", transport = "grpc",
-    project = "example-service", entity = "example", solution = "acme-platform",
+    project = "example-service", entity = "example", organization = "acme-platform",
     persistence = persistence, registry = "ghcr.io/acme",
   }
 end
