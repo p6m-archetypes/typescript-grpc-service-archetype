@@ -19,7 +19,9 @@ jobs:
           version: 10
       - uses: actions/setup-node@v4
         with:
+          # Floats on 22.x; floor is 22.23.4 (Oct 2026 security release)
           node-version: 22
+
       - uses: prova-rs/run-action@v1
         with:
           profile: ci
